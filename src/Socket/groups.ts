@@ -165,8 +165,8 @@ export const makeGroupsSocket = (config: SocketConfig) => {
 				}]
 			)
 			const node = getBinaryNodeChild(result, 'membership_requests_action')
-			const nodeAction = getBinaryNodeChild(node!, action)
-			const participantsAffected = getBinaryNodeChildren(nodeAction!, 'participant')
+			const nodeAction = getBinaryNodeChild(node, action)
+			const participantsAffected = getBinaryNodeChildren(nodeAction, 'participant')
 			return participantsAffected.map(p => {
 				return { status: p.attrs.error || '200', jid: p.attrs.jid }
 			})
@@ -335,6 +335,7 @@ export const extractGroupMetadata = (result: BinaryNode) => {
 		owner: group.attrs.creator ? jidNormalizedUser(group.attrs.creator) : undefined,
 		desc,
 		descId,
+		linkedParent: getBinaryNodeChild(group, 'linked_parent')?.attrs.jid || undefined,
 		restrict: !!getBinaryNodeChild(group, 'locked'),
 		announce: !!getBinaryNodeChild(group, 'announcement'),
 		isCommunity: !!getBinaryNodeChild(group, 'parent'),
